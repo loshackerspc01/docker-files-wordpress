@@ -6,8 +6,8 @@ go to folder and put files ther
 open a new terminal list the files, sure that files exist
 type in terminal: 
   - docker compose pull
-  - docker compuse up -d
-  - docker compuse up
+  - docker compose -d
+  - docker compose up
 
 this should be working!!!
 
