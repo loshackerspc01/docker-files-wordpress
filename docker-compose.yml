@@ -1,33 +1,33 @@
 services:
     db:
         image: mysql:5.7
-        platform: linux/amd64
+        platform: linux/amd64 #MODIFICAR DEPENDIENDO EL TIPO DE ARQUITECTURA DE PROCESADOR, SI ESTAS USANDO X86 DEBES ELIMINAR
         container_name: mysql-wordpress
         ports: 
             - "3306:3306"
         command: --default-authentication-plugin=mysql_native_password
         environment:
-            MYSQL_DATABASE: dbname
-            MYSQL_PASSWORD: test
+            MYSQL_DATABASE: tutorialdb
             MYSQL_USER: wordpress
+            MYSQL_PASSWORD: test
             MYSQL_ROOT_PASSWORD: test 
         volumes:
-            - vol_db:/dump:/docker-entrypoint-initdb.d
-            - vol_db:/conf:/etc/mysql/conf.d
-            - vol_db:/var/lib/mysql
+            - vol_db-test:/dump:/docker-entrypoint-initdb.d
+            - vol_db-test:/conf:/etc/mysql/conf.d
+            - vol_db-test:/var/lib/mysql
         networks:
             - wpsite
             
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
-        platform: linux/amd64
+        platform: linux/amd64 #MODIFICAR DEPENDIENDO EL TIPO DE ARQUITECTURA DE PROCESADOR, SI ESTAS USANDO X86 DEBES ELIMINAR
+        container_name: phpadminwebui
         links: 
             - db:db
         ports:
             - 4282:80
         environment:
             MYSQL_USER: root
-            MYSQL_PASSWORD: test
             MYSQL_ROOT_PASSWORD: test
 
         networks:
@@ -41,17 +41,22 @@ services:
             - '4283:80'
         restart: always
         volumes: 
-          - vol_public:/var/www/html
+          - vol_public-test:/var/www/html
+          - ./php/php-file.ini:/usr/local/etc/php/conf.d/php.ini:ro   # ← añadido para php.ini
         environment:
             WORDPRESS_DB_HOST: mysql-wordpress
-            WORDPRESS_DB_NAME: dbname
+            WORDPRESS_DB_NAME: tutorialdb
             WORDPRESS_DB_USER: wordpress
             WORDPRESS_DB_PASSWORD: test
-                   
+            WORDPRESS_CONFIG_EXTRA: |
+              define('WP_MEMORY_LIMIT', '4096M');
+              define('WP_MAX_MEMORY_LIMIT', '4096M');
         networks:
             - wpsite
+
 networks:
     wpsite:            
 volumes:
-    vol_public:
-    vol_db:
+    vol_public-test:
+    vol_db-test:
+
