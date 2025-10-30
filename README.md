@@ -8,8 +8,9 @@ type in terminal:
   - docker compose pull
   - docker compose up
 
-this should be working!!! update 2 september 2024
+this should be working!!! update 29  Octubre 2025
 
 open docker app and verify port number and open wordpress 
+
 
 
